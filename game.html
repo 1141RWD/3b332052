@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingoFlow | 挑戰中心</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="jelly-bg" style="bottom: 10%; right: 10%;"></div>
+
+    <header class="navbar">
+        <a href="h.html" class="logo">Lingo<span>Flow</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="h.html">首頁</a></li>
+                <li><a href="game.html">單字遊戲</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="game-wrapper">
+        <section id="step-1" class="selection-step">
+            <h2>步驟 1：選擇你的深度</h2>
+            <div class="option-group">
+                <button class="btn-select level-btn" data-level="easy">淺海 (簡單)</button>
+                <button class="btn-select level-btn" data-level="medium">中層 (中等)</button>
+                <button class="btn-select level-btn" data-level="hard">深海 (困難)</button>
+            </div>
+        </section>
+
+        <section id="step-2" class="selection-step hidden">
+            <h2>步驟 2：選擇挑戰模式</h2>
+            <div class="option-group">
+                <button class="btn-select mode-btn" data-mode="flashcard">單字閃卡</button>
+                <button class="btn-select mode-btn" data-mode="quiz">題目測試</button>
+                <button class="btn-select mode-btn" data-mode="match">深海配對</button>
+            </div>
+        </section>
+
+        <section id="game-arena" class="game-display hidden">
+            <div class="game-header">
+                <span id="current-info">模式：未定 | 難度：未定</span>
+                <button id="btn-reset" onclick="location.reload()" class="btn-select" style="padding: 5px 15px; font-size: 0.8rem; margin-left: 10px;">重新開始</button>
+            </div>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <div id="game-content"></div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
