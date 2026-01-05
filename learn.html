@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingoFlow | 深海影音圖書館</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ambient-ocean"></div> 
+    <header class="navbar">
+        <a href="h.html" class="logo">Lingo<span>Flow</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="h.html">首頁</a></li>
+                <li><a href="game.html">單字遊戲</a></li>
+                <li><a href="learn.html" class="active">影音學習</a></li>
+                <li><a href="login.html" class="nav-login-btn">登入</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="learn-container">
+        <div class="hero-mini">
+            <h2>深海影音圖書館</h2>
+            <p>透過影片與例句，深入理解語言的流動。</p>
+        </div>
+
+        <div class="category-tabs">
+            <button class="tab-btn active">全部影片</button>
+            <button class="tab-btn">文法解析</button>
+            <button class="tab-btn">實用例句</button>
+            <button class="tab-btn">片語與俚語</button>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-card" data-category="文法解析" data-id="v1">
+                <div class="video-thumbnail">
+                    <button class="favorite-btn">❤</button>
+                    <a href="https://www.youtube.com/watch?v=Ekn9XnmUaJg" target="_blank" class="video-link">
+                        <img src="https://img.youtube.com/vi/Ekn9XnmUaJg/hqdefault.jpg" alt="現在完成式詳解">
+                        <div class="play-icon">▶</div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <span class="tag">文法</span>
+                    <h3>現在完成式 (Present Perfect) 詳解</h3>
+                    <p>了解 have + p.p. 在各種境下的使用時機。</p>
+                </div>
+            </div>
+
+            <div class="video-card" data-category="片語與俚語" data-id="v2">
+                <div class="video-thumbnail">
+                    <button class="favorite-btn">❤</button>
+                    <a href="https://www.youtube.com/watch?v=eJ9hRxsHklo" target="_blank" class="video-link">
+                        <img src="https://i.ytimg.com/vi/eJ9hRxsHklo/maxresdefault.jpg" alt="5個水有關的片語">
+                        <div class="play-icon">▶</div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <span class="tag">片語</span>
+                    <h3>5 個與「水」有關的英文片語</h3>
+                    <p>A fish out of water 是什麼意思？</p>
+                </div>
+            </div>
+
+            <div class="video-card" data-category="實用例句" data-id="v3">
+                <div class="video-thumbnail">
+                    <button class="favorite-btn">❤</button>
+                    <a href="https://www.youtube.com/watch?v=rhSWWjrW0Ec" target="_blank" class="video-link">
+                        <img src="https://i.ytimg.com/vi/rhSWWjrW0Ec/maxresdefault.jpg" alt="飯店入住對話">
+                        <div class="play-icon">▶</div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <span class="tag">例句</span>
+                    <h3>旅遊必備：飯店入住對話</h3>
+                    <p>跟著潛水員一起學習 check-in 英文。</p>
+                </div>
+            </div>
+
+            <div class="video-card" data-category="文法解析" data-id="v4">
+                <div class="video-thumbnail">
+                    <button class="favorite-btn">❤</button>
+                    <a href="https://www.youtube.com/watch?v=CPPTmlQrk0o" target="_blank" class="video-link">
+                        <img src="https://i.ytimg.com/vi/CPPTmlQrk0o/maxresdefault.jpg" alt="海洋生物文法">
+                        <div class="play-icon">▶</div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <span class="tag">文法</span>
+                    <h3>名詞與複數變化</h3>
+                    <p>為什麼魚的複數還是 Fish？</p>
+                </div>
+            </div>
+
+            <div class="video-card" data-category="片語與俚語" data-id="v5">
+                <div class="video-thumbnail">
+                    <button class="favorite-btn">❤</button>
+                    <a href="https://www.youtube.com/watch?v=3hi1Li08TJc" target="_blank" class="video-link">
+                        <img src="https://i.ytimg.com/vi/3hi1Li08TJc/maxresdefault.jpg" alt="職場片語">
+                        <div class="play-icon">▶</div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <span class="tag">片語</span>
+                    <h3>職場社交必備片語</h3>
+                    <p>學習如何像魚兒得水般表達。</p>
+                </div>
+            </div>
+
+            <div class="video-card" data-category="實用例句" data-id="v6">
+                <div class="video-thumbnail">
+                    <button class="favorite-btn">❤</button>
+                    <a href="https://www.youtube.com/watch?v=cy7Nxf3rZ6U" target="_blank" class="video-link">
+                        <img src="https://i.ytimg.com/vi/cy7Nxf3rZ6U/maxresdefault.jpg" alt="聽力例句">
+                        <div class="play-icon">▶</div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <span class="tag">例句</span>
+                    <h3>環保議題：守護海洋常用句</h3>
+                    <p>練習用正確的例句討論海洋保護。</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
