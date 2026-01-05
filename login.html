@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入 | LingoFlow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page-body">
+    <div class="jelly-bg" style="top: -10%; left: -10%; width: 600px; height: 600px;"></div>
+    <div class="jelly-bg" style="bottom: -10%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, #5B8FA8 0%, transparent 70%);"></div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <a href="h.html" class="logo">Lingo<span>Flow</span></a>
+                <h2>潛入學習深處</h2>
+                <p>登入以同步您的學習進度</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label>帳號</label>
+                    <input type="text" id="username" placeholder="請輸入使用者名稱" required>
+                </div>
+                <div class="input-group">
+                    <label>密碼</label>
+                    <input type="password" id="password" placeholder="請輸入密碼" required>
+                </div>
+                <button type="submit" class="btn-select active" style="width: 100%; border-radius: 10px;">下潛 (登入)</button>
+            </form>
+
+            <div class="login-footer">
+                <p>還沒有帳號？ <a href="register.html">立即註冊</a></p>
+                <a href="h.html" class="back-home">返回首頁</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
