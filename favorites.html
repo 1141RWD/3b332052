@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingoFlow | 我的收藏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ambient-ocean"></div> 
+    <header class="navbar">
+        <a href="h.html" class="logo">Lingo<span>Flow</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="h.html">首頁</a></li>
+                <li><a href="game.html">單字遊戲</a></li>
+                <li><a href="learn.html">影音學習</a></li>
+                <li><a href="login.html" class="nav-login-btn">登入</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="learn-container">
+        <div class="hero-mini">
+            <h2>❤️ 我的個人收藏</h2>
+            <p>這裏是你收藏的深海知識碎片。</p>
+            <a href="learn.html" class="btn-select" style="margin-top: 15px;">返回影音圖書館</a>
+        </div>
+
+        <div id="favorites-grid" class="video-grid">
+            <div id="empty-message" style="grid-column: 1/-1; text-align: center; padding: 50px; display: none;">
+                <p style="font-size: 1.2rem; color: #777;">目前還沒有收藏任何影片喔！</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentUser = localStorage.getItem('lingoUser');
+        if (!currentUser) {
+            alert('請先登入！');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // 重新封裝一個專屬於收藏頁面的邏輯
+        function renderFavorites() {
+            const users = JSON.parse(localStorage.getItem('lingoFlow_users') || '[]');
+            const userIndex = users.findIndex(u => u.username === currentUser);
+            const userData = users[userIndex];
+            const favGrid = document.getElementById('favorites-grid');
+            const emptyMsg = document.getElementById('empty-message');
+
+            // 先清空目前的網格（除了提示訊息）
+            const cards = favGrid.querySelectorAll('.video-card');
+            cards.forEach(c => c.remove());
+
+            const myFavIds = userData ? (userData.favorites || []) : [];
+
+            if (myFavIds.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+
+            const allVideos = [
+                { id: 'v1', tag: '文法', title: '現在完成式詳解', desc: '了解 have + p.p. 在各種境下的使用時機。', url: 'https://www.youtube.com/watch?v=Ekn9XnmUaJg', img: 'https://img.youtube.com/vi/Ekn9XnmUaJg/hqdefault.jpg' },
+                { id: 'v2', tag: '片語', title: '5 個與「水」有關的英文片語', desc: 'A fish out of water 是什麼意思？', url: 'https://www.youtube.com/watch?v=eJ9hRxsHklo', img: 'https://i.ytimg.com/vi/eJ9hRxsHklo/maxresdefault.jpg' },
+                { id: 'v3', tag: '例句', title: '旅遊必備：飯店入住對話', desc: '跟著潛水員一起學習 check-in 英文。', url: 'https://www.youtube.com/watch?v=rhSWWjrW0Ec', img: 'https://i.ytimg.com/vi/rhSWWjrW0Ec/maxresdefault.jpg' },
+                { id: 'v4', tag: '文法', title: '名詞與複數變化', desc: '為什麼魚的複數還是 Fish？', url: 'https://www.youtube.com/watch?v=CPPTmlQrk0o', img: 'https://i.ytimg.com/vi/CPPTmlQrk0o/maxresdefault.jpg' },
+                { id: 'v5', tag: '片語', title: '職場社交必備片語', desc: '學習如何像魚兒得水般表達。', url: 'https://www.youtube.com/watch?v=3hi1Li08TJc', img: 'https://i.ytimg.com/vi/3hi1Li08TJc/maxresdefault.jpg' },
+                { id: 'v6', tag: '例句', title: '環保議題：守護海洋常用句', desc: '練習用正確的例句討論海洋保護。', url: 'https://www.youtube.com/watch?v=cy7Nxf3rZ6U', img: 'https://i.ytimg.com/vi/cy7Nxf3rZ6U/maxresdefault.jpg' }
+            ];
+
+            allVideos.forEach(v => {
+                if (myFavIds.includes(v.id)) {
+                    const card = document.createElement('div');
+                    card.className = 'video-card';
+                    card.dataset.id = v.id;
+                    card.innerHTML = `
+                        <div class="video-thumbnail">
+                            <button class="favorite-btn active">❤</button>
+                            <a href="${v.url}" target="_blank" class="video-link">
+                                <img src="${v.img}" alt="${v.title}">
+                                <div class="play-icon">▶</div>
+                            </a>
+                        </div>
+                        <div class="video-info">
+                            <span class="tag">${v.tag}</span>
+                            <h3>${v.title}</h3>
+                            <p>${v.desc}</p>
+                        </div>
+                    `;
+
+                    // 直接在產生時綁定取消收藏功能
+                    const btn = card.querySelector('.favorite-btn');
+                    btn.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // 移除 ID
+                        const idx = userData.favorites.indexOf(v.id);
+                        if (idx > -1) {
+                            userData.favorites.splice(idx, 1);
+                            // 存回資料庫
+                            users[userIndex] = userData;
+                            localStorage.setItem('lingoFlow_users', JSON.stringify(users));
+                            
+                            // 動態效果移除
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.8)';
+                            card.style.transition = '0.3s';
+                            setTimeout(() => {
+                                card.remove();
+                                if (userData.favorites.length === 0) {
+                                    emptyMsg.style.display = 'block';
+                                }
+                            }, 300);
+                        }
+                    };
+                    favGrid.appendChild(card);
+                }
+            });
+        }
+
+        renderFavorites();
+    });
+</script>
+</body>
+</html>

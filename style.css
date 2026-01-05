@@ -1,0 +1,412 @@
+/* --- 1. 核心變數與全域設定 --- */
+:root {
+    --primary-blue: #5B8FA8;
+    --secondary-teal: #8FB3B0;
+    --accent-light: #E6F0F2;
+    --text-dark: #2C3E50;
+    --white: #FFFFFF;
+    --glass: rgba(255, 255, 255, 0.85);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: linear-gradient(180deg, #F0F7F9 0%, #b0cfdf 100%);
+    min-height: 100vh;
+    background-attachment: fixed;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-dark);
+}
+
+/* --- 2. 背景與動畫 (氣泡與水母) --- */
+.jelly-bg {
+    position: fixed; width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--secondary-teal) 0%, transparent 70%);
+    filter: blur(60px); z-index: -1;
+    animation: float 10s ease-in-out infinite;
+    opacity: 0.4;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-30px, -40px); }
+}
+
+.bubble {
+    position: fixed;
+    bottom: -100px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    filter: blur(1px);
+    animation: rise infinite linear;
+}
+
+@keyframes rise {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-120vh) translateX(50px) scale(1.2); opacity: 0; }
+}
+
+/* --- 3. 導覽列 --- */
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 8%; background: var(--glass);
+    backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.logo { font-size: 1.5rem; font-weight: bold; text-decoration: none; color: var(--text-dark); }
+.logo span { color: var(--primary-blue); }
+.nav-links { list-style: none; display: flex; gap: 20px; align-items: center; }
+.nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary-blue); }
+
+/* 導覽列登入按鈕 */
+.nav-login-btn {
+    background: var(--primary-blue);
+    color: white !important;
+    padding: 8px 20px !important;
+    border-radius: 25px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+.nav-login-btn:hover {
+    background: var(--secondary-teal);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* --- 4. 首頁與共用組件 --- */
+.hero { text-align: center; padding: 80px 10%; }
+.hero h1 { font-size: 3rem; margin-bottom: 20px; }
+.hero h1 span { color: var(--primary-blue); }
+
+.btn-select {
+    padding: 12px 25px; background: white; border: 2px solid var(--primary-blue);
+    color: var(--primary-blue); border-radius: 30px; cursor: pointer;
+    font-size: 1rem; transition: 0.3s; text-decoration: none; display: inline-block;
+}
+.btn-select:hover, .btn-select.active { background: var(--primary-blue); color: white; }
+
+.word-card { 
+    background: white; padding: 30px; border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 500px; margin: 20px auto; text-align: center;
+}
+.phonetic { display: block; color: #888; margin: 5px 0 15px; font-style: italic; }
+.translation { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; }
+.example { color: var(--primary-blue); font-size: 0.9rem; }
+
+/* 跑馬燈容器 */
+.marquee-container {
+    width: 100%;
+    background: rgba(91, 143, 168, 0.15); /* 使用你的主題色 primary-blue 的透明版 */
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(91, 143, 168, 0.2);
+    padding: 8px 0;
+    z-index: 99;
+}
+
+/* 跑馬燈內容 */
+.marquee-content {
+    display: inline-block;
+    padding-left: 100%; /* 從右側開始 */
+    animation: marquee-flow 25s linear infinite; /* 25秒循環一次 */
+}
+
+.marquee-content span {
+    display: inline-block;
+    padding-right: 50px; /* 句子之間的間隔 */
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* 跑馬燈動畫軌跡 */
+@keyframes marquee-flow {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* 滑鼠移上去時停止滾動（方便閱讀） */
+.marquee-container:hover .marquee-content {
+    animation-play-state: paused;
+}
+
+/* --- 5. 遊戲頁面樣式 --- */
+.hidden { display: none !important; }
+.game-wrapper { padding: 3rem 5%; max-width: 900px; margin: 0 auto; min-height: 80vh; }
+.selection-step { text-align: center; margin-bottom: 4rem; animation: fadeIn 0.5s ease; }
+.option-group { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+
+/* 配對遊戲 */
+.match-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+.match-card {
+    height: 100px; background: white; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: 1px solid #ddd; transition: 0.3s; text-align: center; padding: 5px;
+}
+.match-card.selected { border-color: var(--primary-blue); background: var(--accent-light); }
+.match-card.matched { background: var(--secondary-teal); color: white; opacity: 0.5; pointer-events: none; }
+
+/* 閃卡 */
+.flashcard-container { perspective: 1000px; text-align: center; margin-top: 20px; }
+.flashcard {
+    width: 280px; height: 180px; margin: 0 auto 20px;
+    position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer;
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.card-front, .card-back {
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; border-radius: 15px; background: white; border: 2px solid var(--primary-blue);
+}
+.card-back { transform: rotateY(180deg); background: var(--accent-light); color: var(--primary-blue); }
+
+/* 測驗 */
+.quiz-box { text-align: center; }
+.quiz-word { font-size: 2.5rem; margin: 20px 0; color: var(--primary-blue); }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 0 auto; }
+.quiz-opt { padding: 15px; border: 1px solid #ddd; background: white; border-radius: 8px; cursor: pointer; }
+
+/* 勝利畫面 */
+.win-announcement { text-align: center; padding: 40px; background: white; border-radius: 20px; animation: popIn 0.5s; }
+
+/* --- 6. 影音學習頁面 (learn.html) --- */
+.learn-container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+.hero-mini { text-align: center; margin-bottom: 40px; }
+.hero-mini h2 { font-size: 2.2rem; color: var(--text-dark); margin-bottom: 10px; }
+.hero-mini p { color: #666; }
+
+.category-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+.tab-btn {
+    padding: 10px 25px; border: 1px solid var(--primary-blue);
+    background: rgba(255,255,255,0.6); border-radius: 20px; cursor: pointer;
+    color: var(--primary-blue); font-size: 1rem; transition: 0.3s;
+}
+.tab-btn:hover, .tab-btn.active { background: var(--primary-blue); color: white; }
+
+/* 影片卡片網格 */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+.video-card {
+    background: white; border-radius: 15px; overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease; cursor: pointer;
+}
+.video-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 保持 16:9 比例 */
+    background: #000;      /* 圖片載入前的底色 */
+    overflow: hidden;
+}
+.video-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* 確保圖片不變形地填滿 */
+    display: block;
+}
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    backdrop-filter: blur(5px);
+    z-index: 2;           /* 確保在圖片上方 */
+    transition: 0.3s;
+}
+.video-info { padding: 20px; }
+.video-info .tag {
+    display: inline-block; padding: 4px 12px; background: var(--accent-light);
+    color: var(--primary-blue); font-size: 0.8rem; border-radius: 10px; margin-bottom: 10px;
+}
+.video-info h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark); }
+.video-info p { font-size: 0.9rem; color: #777; line-height: 1.5; }
+/* 確保影片內容不會被切掉或顯示不全 */
+.video-thumbnail iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* 讓連結撐滿容器 */
+.video-link {
+    text-decoration: none;
+    display: block;
+}
+
+/* 播放按鈕的視覺效果 (這部分你原本的 CSS 已經有 play-icon，這裡做加強) */
+.video-thumbnail:hover .play-icon {
+    background: rgba(91, 143, 168, 0.9); /* 變成主題色 */
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 愛心收藏按鈕 */
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+    font-size: 1.2rem;
+    color: #ccc; /* 預設灰色 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.favorite-btn.active {
+    color: #ff6b6b; /* 收藏後變紅色 */
+}
+/* --- 7. 登入頁面 (login.html) --- */
+/* 專用的 body class，確保背景全滿 */
+.login-page-body {
+    background: linear-gradient(135deg, #e0f2f1 0%, #bbdfff 100%);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; margin: 0; overflow: hidden;
+}
+
+.login-wrapper {
+    position: relative; z-index: 10; width: 100%; max-width: 420px; padding: 20px;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 30px; padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center;
+}
+
+.login-header h2 { color: var(--text-dark); margin: 15px 0 5px 0; }
+.login-header p { color: #666; font-size: 0.9rem; margin-bottom: 30px; }
+
+.input-group { text-align: left; margin-bottom: 20px; }
+.input-group label {
+    display: block; margin-bottom: 8px; margin-left: 10px;
+    font-size: 0.85rem; color: var(--primary-blue); font-weight: bold;
+}
+.input-group input {
+    width: 100%; padding: 12px 20px; border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.8);
+    outline: none; transition: 0.3s;
+}
+.input-group input:focus {
+    border-color: var(--primary-blue); background: white;
+    box-shadow: 0 0 10px rgba(91, 143, 168, 0.2);
+}
+
+.login-footer { margin-top: 25px; font-size: 0.9rem; }
+.login-footer a { color: var(--primary-blue); text-decoration: none; font-weight: bold; }
+.back-home { display: block; margin-top: 15px; font-size: 0.8rem; opacity: 0.6; }
+.back-home:hover { opacity: 1; }
+
+/* --- 動畫 keyframes --- */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* --- 響應式調整 --- */
+@media (max-width: 600px) {
+    .match-grid { grid-template-columns: repeat(2, 1fr); }
+    .quiz-options { grid-template-columns: 1fr; }
+    .hero { padding: 50px 5%; }
+    .hero h1 { font-size: 2rem; }
+}
+/* 登出按鈕樣式 */
+.logout-link {
+    font-size: 0.85rem;
+    color: #ff6b6b;
+    text-decoration: none;
+    border: 1px solid #ff6b6b;
+    padding: 3px 10px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.logout-link:hover {
+    background: #ff6b6b;
+    color: white;
+}
+.mouse-trail {
+    position: absolute;
+    background: radial-gradient(circle, rgba(143, 179, 176, 0.8) 0%, rgba(91, 143, 168, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    animation: trail-fade 0.8s ease-out forwards;
+}
+
+@keyframes trail-fade {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+.liquid-trail {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    /* 使用深海藍到透白的漸層，模擬水下折射 */
+    background: radial-gradient(circle, rgba(91, 143, 168, 0.6) 0%, rgba(143, 179, 176, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    /* 關鍵：混合模式讓它在深色背景發光，淺色背景柔和 */
+    mix-blend-mode: multiply; 
+    filter: blur(4px);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+/* 針對深色區域，我們微調混合模式讓質感提升 */
+#ambient-ocean ~ .liquid-trail {
+    mix-blend-mode: screen; 
+}
