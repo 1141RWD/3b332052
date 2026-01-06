@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (validUser) {
                 localStorage.setItem('lingoUser', user);
                 alert(`歡迎回來，${user}！讀取您的學習進度中...`);
-                window.location.href = 'h.html';
+                window.location.href = 'index.html';
             } else {
                 alert('帳號或密碼錯誤。');
             }
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             if (confirm('確定要登出嗎？')) {
                 localStorage.removeItem('lingoUser');
-                window.location.href = 'h.html';
+                window.location.href = 'index.html';
             }
         }
     });
